@@ -13,7 +13,7 @@
         <nuxt-link to="/contato">Contato</nuxt-link>
       </div>
       <div class="flex items-center space-x-6">
-        <nuxt-link to="/entrar" class="text-gray-700 font-semibold"
+        <nuxt-link to="/login" class="text-gray-700 font-semibold"
           >Entrar</nuxt-link
         >
         <nuxt-link
