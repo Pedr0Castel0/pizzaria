@@ -1,0 +1,60 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+**Contexto**: Desenvolver um sistema de pizzaria online em **Nuxt3** com **TailwindCSS**, com funcionalidades básicas de exibição de cardápio, cadastro de usuário, carrinho de compras e finalização de pedido.
+
+### Tecnologias e Frameworks:
+- **Framework**: Nuxt3 (Vue 3)
+- **Estilo**: TailwindCSS
+- **Linguagem**: JavaScript (Vue.js)
+- **Responsividade**: O layout deve ser completamente responsivo, garantindo que o site funcione bem em dispositivos móveis e desktops.
+
+### Funcionalidades principais:
+1. **Landing Page**:
+   - Exibição de um banner com chamada de impacto.
+   - Listagem das pizzas mais populares com opção de adicionar ao carrinho.
+   - Exibição de informações sobre o restaurante (como avaliações e detalhes do cardápio).
+
+2. **Cadastro e Login de Usuário**:
+   - Tela para o usuário se cadastrar com informações básicas (nome, telefone, e-mail, endereço).
+   - Tela de login para usuários já cadastrados, com validação de credenciais.
+   - Autenticação de usuários para visualização e histórico de pedidos.
+
+3. **Página de Carrinho**:
+   - Exibição de itens no carrinho com nome, imagem, preço e quantidade.
+   - Opção de adicionar ou remover itens.
+   - Exibição do total e opções para continuar para o pagamento.
+
+4. **Finalização de Pedido**:
+   - Exibição de um resumo do pedido com as pizzas selecionadas.
+   - Seleção do método de entrega (padrão, expressa, grátis para pedidos acima de R$100).
+   - Formulário de dados de entrega (endereço, telefone, etc.).
+   - Resumo do pagamento com subtotal, taxa de entrega e total final.
+
+5. **Sistema de Pagamento**:
+   - Integração de métodos de pagamento (cartão de crédito, boleto, etc.).
+   - Confirmação de compra e envio de e-mail com o resumo do pedido para o cliente.
+
+6. **Administração de Pizzas**:
+   - Tela de administração onde o administrador pode adicionar, editar e remover pizzas do cardápio.
+   - Gerenciamento de preços e descrições das pizzas.
+
+7. **Responsividade**:
+   - O layout deve ser totalmente responsivo, usando as classes utilitárias do TailwindCSS para ajustar a visualização conforme o dispositivo (desktop, tablet, celular).
+   - Todos os formulários devem ser acessíveis e fáceis de usar em dispositivos móveis.
+
+### Estilo Visual:
+- **Cores**: Vermelho (#e50914), Branco, Cinza Claro.
+- **Tipografia**: Fontes modernas e legíveis.
+- **Botões**: Cantos arredondados, cores contrastantes (fundo vermelho com texto branco).
+- **Componentes**: Todos os componentes visuais devem ser criados com **TailwindCSS**, mantendo o código limpo e de fácil manutenção.
+
+### Considerações:
+- **SEO**: O site deve ser otimizado para SEO, especialmente a página inicial e as páginas de produto.
+- **Acessibilidade**: Garantir que todos os formulários, botões e links sejam acessíveis, com foco em usabilidade.
+- **Escalabilidade**: A estrutura do código deve ser bem organizada para facilitar futuras expansões, como inclusão de novos recursos ou categorias de pizza.
