@@ -1,17 +1,5 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <header class="bg-primary-500 p-4">
-      <div class="container mx-auto flex items-center justify-between">
-        <NuxtLink
-          to="/"
-          class="text-2xl font-bold text-white flex items-end gap-2"
-        >
-          <img src="/images/logo.png" alt="Pizza Castelo" class="h-10" />
-          <span class="text-white text-2xl font-bold">Pizza Castelo</span>
-        </NuxtLink>
-      </div>
-    </header>
-
     <UContainer class="py-8">
       <!-- Breadcrumb -->
       <div class="mb-6">
@@ -259,72 +247,6 @@
         </div>
       </div>
     </UContainer>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-16 py-12">
-      <UContainer>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Sobre -->
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Sobre a Pizza Castelo</h3>
-            <p class="text-gray-400">
-              Desde 2024, a Pizza Castelo tem se dedicado a oferecer as melhores
-              pizzas artesanais da região. Nossa missão é proporcionar momentos
-              únicos através de sabores autênticos e ingredientes selecionados.
-            </p>
-          </div>
-
-          <!-- Contato -->
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Contato</h3>
-            <ul class="space-y-2 text-gray-400">
-              <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-phone" />
-                <span>(00) 1234-5678</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-map-pin" />
-                <span>Rua das Pizzas, 123 - Centro</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <UIcon name="i-heroicons-clock" />
-                <span>Ter-Dom: 18h às 23h</span>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Links Rápidos -->
-          <div>
-            <h3 class="text-lg font-semibold mb-4">Links Rápidos</h3>
-            <ul class="space-y-2">
-              <li>
-                <NuxtLink to="/" class="text-gray-400 hover:text-white">
-                  Início
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink to="/cardapio" class="text-gray-400 hover:text-white">
-                  Cardápio
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  to="/politica-privacidade"
-                  class="text-gray-400 hover:text-white"
-                >
-                  Política de Privacidade
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink to="/termos" class="text-gray-400 hover:text-white">
-                  Termos de Uso
-                </NuxtLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </UContainer>
-    </footer>
   </div>
 </template>
 
