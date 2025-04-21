@@ -142,8 +142,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-primary-500 text-white py-8">
-      <div class="container mx-auto px-4">
+    <footer
+      class="bg-primary-500 text-white py-8 mt-12 px-48 self-center w-full"
+    >
+      <div class="mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 class="text-xl font-bold mb-2">Pizza Castelo</h3>
