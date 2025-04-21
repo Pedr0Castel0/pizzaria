@@ -113,7 +113,7 @@
     </section>
 
     <!-- Cardápio -->
-    <section class="mx-auto px-48 py-12 bg-gray-100">
+    <section class="mx-auto px-48 py-12 bg-gray-50">
       <div class="text-center mb-12">
         <h2 class="text-3xl font-bold text-red-600">Nosso Cardápio</h2>
         <p class="text-gray-600 mt-2">
