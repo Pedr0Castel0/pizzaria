@@ -1,121 +1,126 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-[#fef2f2] px-4">
-    <div
-      class="bg-white border-2 border-red-500 rounded-[2rem] shadow-lg w-full max-w-sm px-8 py-10"
-    >
-      <!-- Logo e título -->
-      <div class="text-center mb-6">
-        <img src="/images/logo.png" alt="Pizza Castelo" class="mx-auto h-10" />
-        <h1 class="text-xl font-bold text-red-600 mt-2">Pizza Castelo</h1>
-      </div>
-
-      <!-- Subtítulo -->
-      <h2 class="text-center text-base font-semibold text-gray-800 mb-6">
-        Entre em sua conta
-      </h2>
-
-      <!-- Formulário -->
-      <form class="space-y-4" @submit.prevent="handleLogin">
-        <!-- Email -->
-        <div>
-          <label for="email" class="text-sm text-gray-700 block mb-1"
-            >Email</label
+  <div
+    class="min-h-screen flex items-center bg-[#FEF2F2] dark:bg-gray-900 justify-center py-12 px-4 sm:px-6 lg:px-8"
+  >
+    <UCard class="w-full max-w-md p-6 bg-white dark:bg-gray-800">
+      <div class="flex flex-col items-center space-y-6">
+        <div class="flex items-center gap-2">
+          <img src="/images/logo.png" alt="Pizza Castelo" class="h-14" />
+          <span class="text-red-500 dark:text-red-400 text-2xl font-bold"
+            >Pizza Castelo</span
           >
-          <UInput
-            id="email"
-            v-model="form.email"
-            type="email"
-            placeholder="seu@email.com"
-            class="w-full"
-          />
         </div>
 
-        <!-- Senha + Esqueceu -->
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label for="password" class="text-sm text-gray-700">Senha</label>
-            <NuxtLink
-              to="/esqueceu-senha"
-              class="text-xs text-red-600 hover:underline"
+        <div class="text-center w-full">
+          <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+            Entre em sua conta
+          </h2>
+        </div>
+
+        <form class="space-y-4 w-full">
+          <UFormField label="Email" class="text-gray-700 dark:text-gray-300">
+            <UInput placeholder="seu@email.com" class="w-full" />
+          </UFormField>
+
+          <UFormField label="Senha" class="text-gray-700 dark:text-gray-300">
+            <UInput type="password" placeholder="••••••••" class="w-full" />
+          </UFormField>
+          <div class="flex justify-between items-center">
+            <UCheckbox
+              label="Lembrar de mim"
+              class="text-gray-700 dark:text-gray-300 w-full"
+            />
+            <UButton
+              type="button"
+              variant="link"
+              color="error"
+              class="text-sm w-full justify-end"
             >
               Esqueceu a senha?
-            </NuxtLink>
+            </UButton>
           </div>
-          <UInput
-            id="password"
-            v-model="form.password"
-            type="password"
-            placeholder="••••••••"
-            class="w-full"
-          />
+
+          <UButton
+            type="submit"
+            color="primary"
+            variant="solid"
+            block
+            class="mt-4"
+            :loading="loading"
+            @click="handleSubmit"
+          >
+            Entrar
+          </UButton>
+        </form>
+
+        <div class="w-full">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div
+                class="w-full border-t border-gray-200 dark:border-gray-700"
+              ></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span
+                class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                >Ou continue com</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="mt-6 grid grid-flow-col justify-center auto-cols-max gap-3"
+          >
+            <UButton
+              icon="i-simple-icons-google"
+              size="md"
+              color="neutral"
+              variant="outline"
+            />
+            <UButton
+              icon="i-simple-icons-facebook"
+              size="md"
+              color="neutral"
+              variant="outline"
+            />
+            <UButton
+              icon="i-simple-icons-apple"
+              size="md"
+              color="neutral"
+              variant="outline"
+            />
+          </div>
         </div>
 
-        <!-- Lembrar -->
-
-        <UCheckbox
-          id="remember"
-          v-model="form.remember"
-          color="neutral"
-          label="Lembrar de mim"
-          class="text-gray-700"
-        />
-
-        <!-- Botão -->
-        <button
-          type="submit"
-          class="w-full bg-red-600 text-white rounded-full py-2 text-sm font-medium hover:bg-red-700 transition"
-        >
-          Entrar
-        </button>
-      </form>
-
-      <!-- Separador -->
-      <div class="flex items-center my-6">
-        <div class="h-px bg-gray-200 flex-1"></div>
-        <span class="mx-3 text-xs text-gray-400">Ou continue com</span>
-        <div class="h-px bg-gray-200 flex-1"></div>
+        <div class="text-center text-sm">
+          <span class="text-gray-600 dark:text-gray-400"
+            >Não tem uma conta?</span
+          >
+          <NuxtLink
+            to="/register"
+            class="text-red-500 dark:text-red-400 font-semibold ml-1"
+          >
+            Cadastre-se agora
+          </NuxtLink>
+        </div>
       </div>
-
-      <!-- Social -->
-      <div class="flex justify-center space-x-4">
-        <button
-          class="border border-gray-300 p-2 rounded-full hover:bg-gray-100 transition"
-        >
-          <Icon name="fa6-brands:google" class="text-lg" />
-        </button>
-        <button
-          class="border border-gray-300 p-2 rounded-full hover:bg-gray-100 transition"
-        >
-          <Icon name="fa6-brands:facebook-f" class="text-lg" />
-        </button>
-        <button
-          class="border border-gray-300 p-2 rounded-full hover:bg-gray-100 transition"
-        >
-          <Icon name="fa6-brands:apple" class="text-lg" />
-        </button>
-      </div>
-
-      <!-- Cadastro -->
-      <p class="text-center text-sm text-gray-600 mt-6">
-        Não tem uma conta?
-        <NuxtLink
-          to="/register"
-          class="text-red-600 font-medium hover:underline"
-        >
-          Cadastre-se agora
-        </NuxtLink>
-      </p>
-    </div>
+    </UCard>
   </div>
 </template>
 
-<script setup>
-const form = reactive({
-  email: "",
-  password: "",
-});
+<script setup lang="ts">
+const loading = ref(false);
 
-function handleLogin() {
-  console.log("Login:", form);
-}
+const handleSubmit = () => {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    navigateTo("/");
+    useToast().add({
+      title: "Login realizado com sucesso",
+      description: "Você foi redirecionado para a página inicial",
+      color: "success",
+    });
+  }, 2000);
+};
 </script>
