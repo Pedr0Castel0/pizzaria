@@ -209,9 +209,13 @@
               <li><NuxtLink to="/">Início</NuxtLink></li>
               <li><NuxtLink to="/cardapio">Cardápio</NuxtLink></li>
               <li>
-                <NuxtLink to="/privacidade">Política de Privacidade</NuxtLink>
+                <NuxtLink to="/sobre/privacidade"
+                  >Política de Privacidade</NuxtLink
+                >
               </li>
-              <li><NuxtLink to="/termos">Termos e Condições</NuxtLink></li>
+              <li>
+                <NuxtLink to="/sobre/termos">Termos e Condições</NuxtLink>
+              </li>
             </ul>
           </div>
         </div>
