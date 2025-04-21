@@ -1,8 +1,29 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@layer base {
-  body {
-    color: #01070f;
-  }
+:root {
+  
+  --ui-color-primary-50: #fef3f3;
+  --ui-color-primary-100: #fde4e4;
+  --ui-color-primary-200: #facdcd;
+  --ui-color-primary-300: #f4a4a4;
+  --ui-color-primary-400: #eb5a5a;
+  --ui-color-primary-500: #e0101a;
+  --ui-color-primary-600: #c50e16;
+  --ui-color-primary-700: #a40c14;
+  --ui-color-primary-800: #880911;
+  --ui-color-primary-900: #6b070d;
+  --ui-color-primary-950: #3e0306;
+
+  --ui-color-secondary-50: #f0f9ff;
+  --ui-color-secondary-100: #e0f2fe;
+  --ui-color-secondary-200: #bae6fd;
+  --ui-color-secondary-300: #7dd3fc;
+  --ui-color-secondary-400: #38bdf8;
+  --ui-color-secondary-500: #0ea5e9;
+  --ui-color-secondary-600: #0284c7;
+  --ui-color-secondary-700: #0369a1;
+  --ui-color-secondary-800: #075985;
+  --ui-color-secondary-900: #0c4a6e;
+  --ui-color-secondary-950: #082f49;
 }
