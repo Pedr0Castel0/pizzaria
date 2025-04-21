@@ -222,7 +222,9 @@
           <nuxt-link to="/" class="text-gray-700">Início</nuxt-link>
           <nuxt-link to="/cardapio" class="text-gray-700">Cardápio</nuxt-link>
           <nuxt-link to="/sobre" class="text-gray-700">Sobre</nuxt-link>
-          <nuxt-link to="/sobre/contato" class="text-gray-700">Contato</nuxt-link>
+          <nuxt-link to="/sobre/contato" class="text-gray-700"
+            >Contato</nuxt-link
+          >
         </div>
         <div class="flex justify-center space-x-4 mt-4">
           <a href="#" class="text-gray-400 hover:text-gray-600">
