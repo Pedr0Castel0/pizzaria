@@ -1,0 +1,460 @@
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <header class="bg-primary-500 p-4">
+      <div class="container mx-auto flex items-center justify-between">
+        <NuxtLink
+          to="/"
+          class="text-2xl font-bold text-white flex items-end gap-2"
+        >
+          <img src="/images/logo.png" alt="Pizza Castelo" class="h-10" />
+          <span class="text-white text-2xl font-bold">Pizza Castelo</span>
+        </NuxtLink>
+      </div>
+    </header>
+
+    <UContainer class="py-8">
+      <!-- Breadcrumb -->
+      <div class="mb-6">
+        <UBreadcrumb
+          :items="[
+            { label: 'Início', to: '/' },
+            { label: 'Cardápio', to: '/cardapio' },
+            { label: 'Carrinho', to: '/carrinho' },
+          ]"
+        />
+      </div>
+
+      <!-- Progress Steps -->
+      <div class="mb-8">
+        <UStepper
+          v-model="currentStep"
+          :items="[
+            { title: 'Entrega', description: 'Dados de entrega' },
+            { title: 'Pagamento', description: 'Forma de pagamento' },
+            { title: 'Confirmação', description: 'Resumo do pedido' },
+          ]"
+        />
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Carrinho e Formulário -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Lista de Produtos -->
+          <UCard>
+            <template #header>
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Carrinho</h2>
+                <UButton
+                  v-if="cartItems.length"
+                  color="primary"
+                  variant="ghost"
+                  icon="i-heroicons-trash"
+                  @click="clearCart"
+                >
+                  Limpar Carrinho
+                </UButton>
+              </div>
+            </template>
+
+            <div v-if="cartItems.length" class="space-y-4">
+              <div
+                v-for="item in cartItems"
+                :key="item.id"
+                class="flex gap-4 py-4 border-b last:border-0"
+              >
+                <img
+                  :src="item.image"
+                  :alt="item.name"
+                  class="w-24 h-24 object-cover rounded-lg"
+                />
+                <div class="flex-1">
+                  <div class="flex justify-between">
+                    <div>
+                      <h3 class="font-medium">{{ item.name }}</h3>
+                      <p class="text-sm text-gray-600">
+                        {{ item.description }}
+                      </p>
+                      <p class="text-sm text-gray-500">{{ item.size }}</p>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-semibold">
+                        R$ {{ (item.price * item.quantity).toFixed(2) }}
+                      </p>
+                      <div class="flex items-center gap-2 mt-2">
+                        <UButton
+                          color="neutral"
+                          variant="ghost"
+                          icon="i-heroicons-minus"
+                          :disabled="item.quantity <= 1"
+                          @click="updateQuantity(item.id, -1)"
+                        />
+                        <span class="w-8 text-center">{{ item.quantity }}</span>
+                        <UButton
+                          color="neutral"
+                          variant="ghost"
+                          icon="i-heroicons-plus"
+                          @click="updateQuantity(item.id, 1)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="text-center py-8 text-gray-500">
+              Seu carrinho está vazio
+            </div>
+          </UCard>
+
+          <!-- Formulário de Entrega -->
+          <UCard class="p-6 bg-white dark:bg-gray-800 space-y-6">
+            <!-- Seção de Informações de Entrega -->
+            <div>
+              <h2 class="text-xl font-semibold text-gray-800">
+                Informações de Entrega
+              </h2>
+              <div class="mt-4 space-y-4">
+                <!-- CEP com botão Buscar -->
+                <UFormField label="CEP" required>
+                  <div class="flex space-x-4">
+                    <UInput
+                      v-model="form.cep"
+                      placeholder="00000-000"
+                      class="flex-1"
+                    />
+                    <UButton variant="outline" @click="buscarCEP"
+                      >Buscar</UButton
+                    >
+                  </div>
+                </UFormField>
+
+                <!-- Endereço e Número -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div class="md:col-span-3">
+                    <UFormField label="Endereço" required>
+                      <UInput v-model="form.endereco" class="w-full" />
+                    </UFormField>
+                  </div>
+                  <div>
+                    <UFormField label="Número" required>
+                      <UInput v-model="form.numero" class="w-full" />
+                    </UFormField>
+                  </div>
+                </div>
+
+                <!-- Complemento e Bairro -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="md:col-span-2">
+                    <UFormField label="Complemento">
+                      <UInput
+                        v-model="form.complemento"
+                        placeholder="Apto, bloco, referência"
+                        class="w-full"
+                      />
+                    </UFormField>
+                  </div>
+                  <div>
+                    <UFormField label="Bairro">
+                      <UInput v-model="form.bairro" class="w-full" />
+                    </UFormField>
+                  </div>
+                </div>
+
+                <!-- Cidade e Estado -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="md:col-span-2">
+                    <UFormField label="Cidade">
+                      <UInput v-model="form.cidade" class="w-full" />
+                    </UFormField>
+                  </div>
+                  <div>
+                    <UFormField label="Estado">
+                      <UInput v-model="form.estado" class="w-full" />
+                    </UFormField>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seção de Opções de Entrega -->
+            <div>
+              <h2 class="text-xl font-semibold text-gray-800">
+                Opções de Entrega
+              </h2>
+              <URadioGroup v-model="form.opcaoEntrega" class="mt-4 space-y-4">
+                <URadio
+                  v-for="option in deliveryOptions"
+                  :key="option.value"
+                  :value="option.value"
+                  :label="option.label"
+                  :description="option.description"
+                  class="flex justify-between items-center p-4 border rounded-lg cursor-pointer"
+                  :class="
+                    form.opcaoEntrega === option.value
+                      ? 'border-red-500 bg-red-50'
+                      : 'border-gray-200 bg-white'
+                  "
+                >
+                  <template #meta>
+                    <span
+                      :class="
+                        form.opcaoEntrega === option.value
+                          ? 'text-red-500'
+                          : 'text-gray-500'
+                      "
+                      class="font-medium"
+                    >
+                      {{ option.price }}
+                    </span>
+                  </template>
+                </URadio>
+              </URadioGroup>
+            </div>
+
+            <!-- Botão de Continuação -->
+            <div class="flex justify-end">
+              <UButton @click="continuarPagamento">
+                Continuar para Pagamento
+                <UIcon name="arrow-right" class="ml-2" />
+              </UButton>
+            </div>
+          </UCard>
+        </div>
+
+        <!-- Resumo do Pedido -->
+        <div class="lg:col-span-1">
+          <UCard>
+            <template #header>
+              <h2 class="text-xl font-semibold">Resumo do Pedido</h2>
+            </template>
+
+            <div class="space-y-4">
+              <div class="flex justify-between">
+                <span>Subtotal</span>
+                <span>R$ {{ subtotal.toFixed(2) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Taxa de Entrega</span>
+                <span>R$ {{ taxaEntrega.toFixed(2) }}</span>
+              </div>
+              <div class="border-t pt-4">
+                <div class="flex justify-between font-semibold text-lg">
+                  <span>Total</span>
+                  <span>R$ {{ total.toFixed(2) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <template #footer>
+              <UButton
+                color="primary"
+                block
+                :disabled="!isFormValid || !cartItems.length"
+                @click="continuarPagamento"
+              >
+                Continuar para Pagamento
+              </UButton>
+            </template>
+          </UCard>
+        </div>
+      </div>
+    </UContainer>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16 py-12">
+      <UContainer>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Sobre -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Sobre a Pizza Castelo</h3>
+            <p class="text-gray-400">
+              Desde 2024, a Pizza Castelo tem se dedicado a oferecer as melhores
+              pizzas artesanais da região. Nossa missão é proporcionar momentos
+              únicos através de sabores autênticos e ingredientes selecionados.
+            </p>
+          </div>
+
+          <!-- Contato -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Contato</h3>
+            <ul class="space-y-2 text-gray-400">
+              <li class="flex items-center gap-2">
+                <UIcon name="i-heroicons-phone" />
+                <span>(00) 1234-5678</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <UIcon name="i-heroicons-map-pin" />
+                <span>Rua das Pizzas, 123 - Centro</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <UIcon name="i-heroicons-clock" />
+                <span>Ter-Dom: 18h às 23h</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Links Rápidos -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Links Rápidos</h3>
+            <ul class="space-y-2">
+              <li>
+                <NuxtLink to="/" class="text-gray-400 hover:text-white">
+                  Início
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/cardapio" class="text-gray-400 hover:text-white">
+                  Cardápio
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink
+                  to="/politica-privacidade"
+                  class="text-gray-400 hover:text-white"
+                >
+                  Política de Privacidade
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/termos" class="text-gray-400 hover:text-white">
+                  Termos de Uso
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </UContainer>
+    </footer>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed } from "vue";
+
+// Passos do checkout
+const currentStep = ref(0);
+
+// Estado do carrinho
+interface CartItem {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  size: string;
+  image: string;
+  quantity: number;
+}
+const cartItems = ref<CartItem[]>([]);
+
+// Carrega itens do localStorage ou API
+cartItems.value = [
+  // Exemplo de item
+  {
+    id: 1,
+    name: "Pizza Margherita",
+    description: "...",
+    price: 45,
+    size: "8 fatias",
+    image: "/images/pizzas/margherita.jpg",
+    quantity: 1,
+  },
+];
+
+// Formulário de entrega
+interface DeliveryFormModel {
+  cep: string;
+  endereco: string;
+  numero: string;
+  complemento: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+  opcaoEntrega: string;
+}
+const form = reactive<DeliveryFormModel>({
+  cep: "",
+  endereco: "",
+  numero: "",
+  complemento: "",
+  bairro: "",
+  cidade: "",
+  estado: "",
+  opcaoEntrega: "padrao",
+});
+
+const deliveryOptions = [
+  {
+    value: "padrao",
+    label: "Entrega Padrão",
+    description: "Receba em até 45 minutos",
+    price: "R$ 10,00",
+  },
+  {
+    value: "expressa",
+    label: "Entrega Expressa",
+    description: "Receba em até 30 minutos",
+    price: "R$ 15,00",
+  },
+  {
+    value: "gratis",
+    label: "Entrega Grátis",
+    description: "Acima de R$100 - até 60 minutos",
+    price: "R$ 0,00",
+  },
+];
+
+// Cálculos de valores
+const subtotal = computed(() =>
+  cartItems.value.reduce((sum, i) => sum + i.price * i.quantity, 0)
+);
+const taxaEntrega = computed(() => {
+  switch (form.opcaoEntrega) {
+    case "expressa":
+      return 15;
+    case "gratis":
+      return subtotal.value >= 100 ? 0 : 10;
+    default:
+      return 10;
+  }
+});
+const total = computed(() => subtotal.value + taxaEntrega.value);
+
+const isFormValid = computed(
+  () => form.cep && form.endereco && form.numero && form.cidade && form.estado
+);
+
+// Ações
+function updateQuantity(id: number, delta: number) {
+  const item = cartItems.value.find((i) => i.id === id);
+  if (item) item.quantity = Math.max(1, item.quantity + delta);
+}
+function clearCart() {
+  cartItems.value = [];
+}
+
+interface ViaCEPResponse {
+  logradouro: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+}
+
+async function buscarCEP() {
+  if (!form.cep) return;
+  try {
+    const data = await $fetch<ViaCEPResponse>(
+      `https://viacep.com.br/ws/${form.cep.replace(/\D/g, "")}/json/`
+    );
+    form.endereco = data.logradouro || "";
+    form.bairro = data.bairro || "";
+    form.cidade = data.localidade || "";
+    form.estado = data.uf || "";
+  } catch {
+    // tratar erro
+  }
+}
+function continuarPagamento() {
+  currentStep.value = 1;
+  // navegar para página de pagamento
+}
+</script>
