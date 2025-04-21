@@ -1,2 +1,8 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+@layer base {
+  body {
+    color: #01070f;
+  }
+}
