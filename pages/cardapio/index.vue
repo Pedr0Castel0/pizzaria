@@ -1,24 +1,5 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <header class="bg-primary-500 p-4">
-      <div class="container mx-auto flex items-center justify-between">
-        <NuxtLink
-          to="/"
-          class="text-2xl font-bold text-white flex items-end gap-2"
-        >
-          <img src="/images/logo.png" alt="Pizza Castelo" class="h-10" />
-          <span class="text-white text-2xl font-bold">Pizza Castelo</span>
-        </NuxtLink>
-        <NuxtLink
-          to="/carrinho"
-          class="text-white flex items-center gap-2"
-          aria-label="Ver carrinho"
-        >
-          <UIcon name="i-heroicons-shopping-cart" class="w-6 h-6" />
-          <span>Carrinho</span>
-        </NuxtLink>
-      </div>
-    </header>
     <UContainer>
       <div class="py-6">
         <!-- Header com seleção de categoria e busca -->
