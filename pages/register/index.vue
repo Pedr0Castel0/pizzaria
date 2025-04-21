@@ -1,26 +1,5 @@
 <template>
   <div class="flex flex-col min-h-screen bg-[#FEF2F2]">
-    <!-- Header -->
-    <header class="bg-primary-500 p-4">
-      <div class="container mx-auto flex items-center justify-between">
-        <NuxtLink
-          to="/"
-          class="text-2xl font-bold text-white flex items-end gap-2"
-        >
-          <img src="/images/logo.png" alt="Pizza Castelo" class="h-10" />
-          <span class="text-white text-2xl font-bold">Pizza Castelo</span>
-        </NuxtLink>
-        <NuxtLink
-          to="/carrinho"
-          class="text-white flex items-center gap-2"
-          aria-label="Ver carrinho"
-        >
-          <UIcon name="i-heroicons-shopping-cart" class="w-6 h-6" />
-          <span>Carrinho</span>
-        </NuxtLink>
-      </div>
-    </header>
-
     <!-- Main -->
     <main class="flex-1 container mx-auto px-4 py-8">
       <NuxtLink
@@ -50,11 +29,11 @@
               />
             </UFormField>
 
-            <UFormField label="Telefone" required>
+            <UFormField label="Senha" required>
               <UInput
-                v-model="form.telefone"
-                type="tel"
-                placeholder="(00) 00000-0000"
+                v-model="form.senha"
+                type="password"
+                placeholder="Digite sua senha"
                 class="w-full"
               />
             </UFormField>
@@ -191,7 +170,7 @@
             <ul class="space-y-2 text-sm">
               <li class="flex items-center">
                 <UIcon name="i-heroicons-phone" class="w-5 h-5 mr-2" />
-                (11) 5555‑1234
+                (11) 5555-1234
               </li>
               <li class="flex items-center">
                 <UIcon name="i-heroicons-map-pin" class="w-5 h-5 mr-2" />
@@ -199,7 +178,7 @@
               </li>
               <li class="flex items-center">
                 <UIcon name="i-heroicons-clock" class="w-5 h-5 mr-2" />
-                Ter‑Dom: 18:00‑23:00
+                Ter-Dom: 18:00-23:00
               </li>
             </ul>
           </div>
@@ -229,7 +208,7 @@ import { reactive, ref } from "vue";
 
 const form = reactive({
   nome: "",
-  telefone: "",
+  senha: "",
   email: "",
   cep: "",
   endereco: "",
@@ -280,8 +259,32 @@ async function buscarCep() {
 }
 
 async function handleSubmit() {
-  // TODO: lógica de envio do formulário
-  console.log("Dados do formulário:", { ...form });
+  try {
+    await buscarCep();
+    // TODO: lógica de envio do formulário
+    console.log("Dados do formulário:", { ...form });
+    const res = await $fetch("https://back-pizzaria.vercel.app/cadastro", {
+      method: "POST",
+      body: form,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(res);
+    useToast().add({
+      title: "Cadastro realizado com sucesso",
+      description: "Você foi cadastrado com sucesso.",
+      color: "success",
+    });
+    navigateTo("/login");
+  } catch (e) {
+    console.log(e);
+    useToast().add({
+      title: "Erro ao cadastrar",
+      description: "Por favor, tente novamente.",
+      color: "error",
+    });
+  }
 }
 
 const estados = [
