@@ -22,6 +22,8 @@ export function useAuth() {
 
     if (error.value) throw error.value;
     userStore.setUser(data.value?.usuario_id ?? 0);
+    localStorage.setItem("usuario_id", JSON.stringify(data.value?.usuario_id));
+    console.log("data.value", data.value);
   }
 
   async function register(payload: {
