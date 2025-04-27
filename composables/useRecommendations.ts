@@ -1,5 +1,8 @@
 interface RecommendationsResponse {
-  pizzas_recomendadas: string[];
+  pizzas_recomendadas: {
+    nome: string;
+    preco: number;
+  }[];
   bebidas_recomendadas: string[];
 }
 
@@ -8,10 +11,15 @@ export function useRecommendations() {
   const userStore = useUserStore();
 
   async function obterRecomendacoes() {
-    const { data, error } = await useFetch<RecommendationsResponse>(`/recomendacao/${userStore.usuarioId}`, {
-      baseURL: config.public.apiBase,
-    });
+    console.log("userStore.usuarioId", userStore.usuarioId);
+    const { data, error } = await useFetch<RecommendationsResponse>(
+      `/recomendacao/${userStore.usuarioId}`,
+      {
+        baseURL: config.public.apiBase,
+      }
+    );
     if (error.value) throw error.value;
+    console.log("data", data.value);
     return data.value;
   }
 
