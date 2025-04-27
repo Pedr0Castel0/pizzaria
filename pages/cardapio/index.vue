@@ -24,46 +24,12 @@
 
         <!-- Grid de produtos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div
+          <PizzaCard
             v-for="item in filteredItems"
             :key="item.id"
-            class="bg-white rounded-lg p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <img
-              :src="item.image"
-              :alt="item.name"
-              class="w-32 h-32 object-contain rounded-md"
-            />
-
-            <div class="flex-1">
-              <div class="flex flex-col h-full justify-between">
-                <div>
-                  <h3 class="font-medium text-lg">{{ item.name }}</h3>
-                  <p class="text-sm text-gray-500">{{ item.size }}</p>
-                  <p class="text-sm text-gray-600 mt-1">
-                    {{ item.description }}
-                  </p>
-                  <p v-if="item.info" class="text-xs text-gray-400 mt-1">
-                    {{ item.info }}
-                  </p>
-                </div>
-
-                <div class="mt-4 flex items-center justify-between">
-                  <span class="font-semibold text-lg"
-                    >R$ {{ item.price.toFixed(2) }}</span
-                  >
-                  <UButton
-                    color="primary"
-                    variant="solid"
-                    icon="i-heroicons-plus"
-                    @click="addToCart(item)"
-                  >
-                    Adicionar
-                  </UButton>
-                </div>
-              </div>
-            </div>
-          </div>
+            :pizza="item"
+            @add-to-cart="addToCart"
+          />
         </div>
       </div>
     </UContainer>
@@ -71,6 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import PizzaCard from '~/components/PizzaCard.vue';
+
 interface MenuItem {
   id: number;
   name: string;
