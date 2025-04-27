@@ -12,7 +12,10 @@
 
       <h1 class="text-2xl font-bold text-gray-900 mb-8">Cadastro</h1>
 
-      <form class="max-w-2xl mx-auto space-y-6" @submit.prevent="handleSubmit">
+      <form
+        class="max-w-2xl mx-auto space-y-6"
+        @submit.prevent="handleRegister"
+      >
         <!-- Informações Pessoais -->
         <UCard>
           <template #header>
@@ -23,27 +26,30 @@
           <div class="space-y-4 p-6">
             <UFormField label="Nome" required>
               <UInput
-                v-model="form.nome"
+                :model-value="form.nome"
                 placeholder="Digite seu nome"
                 class="w-full"
+                @update:model-value="(value) => debounceUpdate('nome', value as string)"
               />
             </UFormField>
 
             <UFormField label="Senha" required>
               <UInput
-                v-model="form.senha"
+                :model-value="form.senha"
                 type="password"
                 placeholder="Digite sua senha"
                 class="w-full"
+                @update:model-value="(value) => debounceUpdate('senha', value as string)"
               />
             </UFormField>
 
             <UFormField label="Email" required>
               <UInput
-                v-model="form.email"
+                :model-value="form.email"
                 type="email"
                 placeholder="exemplo@email.com"
                 class="w-full"
+                @update:model-value="(value) => debounceUpdate('email', value as string)"
               />
             </UFormField>
           </div>
@@ -61,11 +67,12 @@
             <div class="flex flex-col sm:flex-row sm:items-end gap-4">
               <UFormField label="CEP" class="flex-1" required>
                 <UInput
-                  v-model="form.cep"
+                  :model-value="form.cep"
                   placeholder="00000-000"
                   maxlength="9"
                   pattern="\d{5}-?\d{3}"
                   class="w-full"
+                  @update:model-value="(value) => debounceUpdate('cep', value as string)"
                 />
               </UFormField>
               <UButton
@@ -86,16 +93,22 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <UFormField label="Endereço" class="md:col-span-3" required>
                 <UInput
-                  v-model="form.endereco"
+                  :model-value="form.endereco"
                   placeholder="Rua, Avenida, etc"
                   class="w-full"
+                  @update:model-value="
+                    (value) => debounceUpdate('endereco', value as string)
+                  "
                 />
               </UFormField>
               <UFormField label="Número" class="md:col-span-1" required>
                 <UInput
-                  v-model="form.numero"
+                  :model-value="form.numero"
                   placeholder="Número"
                   class="w-full"
+                  @update:model-value="
+                    (value) => debounceUpdate('numero', value as string)
+                  "
                 />
               </UFormField>
             </div>
@@ -104,16 +117,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <UFormField label="Complemento">
                 <UInput
-                  v-model="form.complemento"
+                  :model-value="form.complemento"
                   placeholder="Apto, bloco, referência"
                   class="w-full"
+                  @update:model-value="
+                    (value) => debounceUpdate('complemento', value as string)
+                  "
                 />
               </UFormField>
               <UFormField label="Bairro">
                 <UInput
-                  v-model="form.bairro"
+                  :model-value="form.bairro"
                   placeholder="Bairro"
                   class="w-full"
+                  @update:model-value="
+                    (value) => debounceUpdate('bairro', value as string)
+                  "
                 />
               </UFormField>
             </div>
@@ -122,15 +141,19 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
               <UFormField label="Cidade" class="md:col-span-3" required>
                 <UInput
-                  v-model="form.cidade"
+                  :model-value="form.cidade"
                   placeholder="Cidade"
                   class="w-full"
+                  @update:model-value="
+                    (value) => debounceUpdate('cidade', value as string)
+                  "
                 />
               </UFormField>
               <UFormField label="Estado" class="md:col-span-1" required>
-                <USelectMenu
+                <USelect
                   v-model="form.estado"
                   :items="estados"
+                  arrow
                   class="w-full"
                   placeholder="Selecione"
                 />
@@ -142,6 +165,8 @@
         <!-- Submit -->
         <div class="flex justify-end">
           <UButton
+            v-if="formComplete"
+            :disabled="loading"
             type="submit"
             color="primary"
             variant="solid"
@@ -153,65 +178,32 @@
         </div>
       </form>
     </main>
-
-    <!-- Footer -->
-    <footer
-      class="bg-primary-500 text-white py-8 mt-12 px-48 self-center w-full"
-    >
-      <div class="mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <h3 class="text-xl font-bold mb-2">Pizza Castelo</h3>
-            <p class="text-sm">
-              Servindo as melhores pizzas da cidade desde 2010.<br />
-              Ingredientes frescos e massa artesanal.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Contato</h3>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center">
-                <UIcon name="i-heroicons-phone" class="w-5 h-5 mr-2" />
-                (11) 5555-1234
-              </li>
-              <li class="flex items-center">
-                <UIcon name="i-heroicons-map-pin" class="w-5 h-5 mr-2" />
-                Rua das Pizzas, 123
-              </li>
-              <li class="flex items-center">
-                <UIcon name="i-heroicons-clock" class="w-5 h-5 mr-2" />
-                Ter-Dom: 18:00-23:00
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Links Rápidos</h3>
-            <ul class="space-y-2 text-sm">
-              <li><NuxtLink to="/">Início</NuxtLink></li>
-              <li><NuxtLink to="/cardapio">Cardápio</NuxtLink></li>
-              <li>
-                <NuxtLink to="/sobre/privacidade"
-                  >Política de Privacidade</NuxtLink
-                >
-              </li>
-              <li>
-                <NuxtLink to="/sobre/termos">Termos e Condições</NuxtLink>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>
 
-<script setup>
-import { reactive, ref } from "vue";
+<script setup lang="ts">
+const router = useRouter();
+const { register } = useAuth();
+const loading = ref(false);
 
-const form = reactive({
+const formComplete = computed(() => {
+  return Boolean(
+    form.value.nome &&
+    form.value.email &&
+    form.value.senha &&
+    form.value.cep &&
+    form.value.endereco &&
+    form.value.numero &&
+    form.value.cidade &&
+    form.value.estado
+  );
+});
+
+definePageMeta({ layout: "auth" });
+const form = ref({
   nome: "",
-  senha: "",
   email: "",
+  senha: "",
   cep: "",
   endereco: "",
   numero: "",
@@ -221,38 +213,59 @@ const form = reactive({
   estado: "",
 });
 
+const debounceTimeout = ref<NodeJS.Timeout | null>(null);
+
+function debounceUpdate(field: string, value: string) {
+  if (debounceTimeout.value) {
+    clearTimeout(debounceTimeout.value);
+  }
+
+  debounceTimeout.value = setTimeout(() => {
+    form.value[field as keyof typeof form.value] = value;
+  }, 300);
+}
+
+async function handleRegister() {
+  try {
+    loading.value = true;
+    await register(form.value);
+    useToast().add({
+      title: "Cadastro realizado com sucesso",
+      description: "Você será redirecionado para o login",
+      color: "success",
+    });
+    router.push("/login");
+  } catch (error: unknown) {
+    useToast().add({
+      title: "Erro ao fazer cadastro",
+      description: error instanceof Error ? error.message : "Tente novamente",
+      color: "error",
+    });
+  } finally {
+    loading.value = false;
+  }
+}
+
 const buscandoCep = ref(false);
 
 async function buscarCep() {
-  if (!form.cep) return;
   buscandoCep.value = true;
   try {
-    const cepNum = form.cep.replace(/\D/g, "");
-    const res = await fetch(`https://viacep.com.br/ws/${cepNum}/json/`);
-    const data = await res.json();
-    if (!data.erro) {
-      form.endereco = data.logradouro;
-      form.bairro = data.bairro;
-      form.cidade = data.localidade;
-      form.estado = data.uf;
-    }
+    const response = await fetch(
+      `https://viacep.com.br/ws/${form.value.cep}/json/`
+    );
+    const data = await response.json();
     if (data.erro) {
-      useToast().add({
-        title: "CEP não encontrado",
-        description: "Por favor, tente novamente.",
-        color: "error",
-      });
-      return;
+      throw new Error("CEP inválido");
     }
-    useToast().add({
-      title: "CEP encontrado",
-      description: "Endereço encontrado com sucesso.",
-      color: "success",
-    });
-  } catch (e) {
+    form.value.endereco = data.logradouro;
+    form.value.bairro = data.bairro;
+    form.value.cidade = data.localidade;
+    form.value.estado = data.uf;
+  } catch (error: unknown) {
     useToast().add({
       title: "Erro ao buscar CEP",
-      description: e.message,
+      description: error instanceof Error ? error.message : "Tente novamente",
       color: "error",
     });
   } finally {
@@ -260,36 +273,7 @@ async function buscarCep() {
   }
 }
 
-async function handleSubmit() {
-  try {
-    await buscarCep();
-    // TODO: lógica de envio do formulário
-    console.log("Dados do formulário:", { ...form });
-    const res = await $fetch("https://back-pizzaria.vercel.app/cadastro", {
-      method: "POST",
-      body: form,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(res);
-    useToast().add({
-      title: "Cadastro realizado com sucesso",
-      description: "Você foi cadastrado com sucesso.",
-      color: "success",
-    });
-    navigateTo("/login");
-  } catch (e) {
-    console.log(e);
-    useToast().add({
-      title: "Erro ao cadastrar",
-      description: "Por favor, tente novamente.",
-      color: "error",
-    });
-  }
-}
-
-const estados = [
+const estados = ref([
   { label: "Acre", value: "AC" },
   { label: "Alagoas", value: "AL" },
   { label: "Amapá", value: "AP" },
@@ -317,5 +301,5 @@ const estados = [
   { label: "São Paulo", value: "SP" },
   { label: "Sergipe", value: "SE" },
   { label: "Tocantins", value: "TO" },
-];
+] satisfies { label: string; value: string }[]);
 </script>
