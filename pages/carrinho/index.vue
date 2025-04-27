@@ -385,8 +385,8 @@ interface DeliveryFormModel {
 
 // Formulário de pagamento
 interface PaymentFormModel {
-  pagamento: 'online' | 'entrega' | null;
-  pagamentoEntrega: 'dinheiro' | 'cartao' | null;
+  pagamento: "online" | "entrega" | null;
+  pagamentoEntrega: "dinheiro" | "cartao" | null;
   trocoPara: string;
 }
 
@@ -445,16 +445,26 @@ const isFormValid = computed(
 // Validação do pagamento
 const isPagamentoValid = computed(() => {
   if (!form.pagamento) return false;
-  if (form.pagamento === 'entrega' && !form.pagamentoEntrega) return false;
-  if (form.pagamento === 'entrega' && form.pagamentoEntrega === 'dinheiro' && !form.trocoPara) return false;
+  if (form.pagamento === "entrega" && !form.pagamentoEntrega) return false;
+  if (
+    form.pagamento === "entrega" &&
+    form.pagamentoEntrega === "dinheiro" &&
+    !form.trocoPara
+  )
+    return false;
   return true;
 });
 
 // Ações
 function updateQuantity(id: number, delta: number) {
   const item = cartItems.value.find((i) => i.id === id);
-  if (item) item.quantity = Math.max(1, item.quantity + delta);
+
+  if (item) item.quantity = Math.max(0, item.quantity + delta);
+  if (item && item.quantity === 0) {
+    cartItems.value = cartItems.value.filter((i) => i.id !== id);
+  }
 }
+
 function clearCart() {
   cartStore.clear();
   cartItems.value = [];
