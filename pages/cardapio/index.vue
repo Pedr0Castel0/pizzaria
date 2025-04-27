@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import PizzaCard from '~/components/PizzaCard.vue';
+import PizzaCard from "~/components/PizzaCard.vue";
 
 interface MenuItem {
   id: number;
@@ -77,12 +77,50 @@ const categories = ref<Category[]>([
       },
       {
         id: 2,
+        name: "Pepperoni",
+        description: "Molho de tomate, mussarela e pepperoni",
+        price: 55.0,
+        size: "8 fatias",
+        category: "Pizzas Tradicionais",
+        image: "/images/pizzas/pepperoni.jpg",
+      },
+      {
+        id: 3,
+        name: "Quatro Queijos",
+        description:
+          "Molho de tomate, mussarela, parmesão, gorgonzola e catupiry",
+        price: 60.0,
+        size: "8 fatias",
+        category: "Pizzas Tradicionais",
+        image: "/images/pizzas/quatro-queijos.jpg",
+      },
+      {
+        id: 4,
+        name: "Frango com Catupiry",
+        description: "Molho de tomate, mussarela, frango desfiado e catupiry",
+        price: 55.0,
+        size: "8 fatias",
+        category: "Pizzas Tradicionais",
+        image: "/images/pizzas/frango-catupiry.jpg",
+      },
+      {
+        id: 5,
         name: "Calabresa",
         description: "Molho de tomate, mussarela, calabresa fatiada e cebola",
         price: 50.0,
         size: "8 fatias",
         category: "Pizzas Tradicionais",
         image: "/images/pizzas/calabresa.jpg",
+      },
+      {
+        id: 6,
+        name: "Vegetariana",
+        description:
+          "Molho de tomate, mussarela, tomate, cebola, pimentão, champignon e azeitonas",
+        price: 55.0,
+        size: "8 fatias",
+        category: "Pizzas Tradicionais",
+        image: "/images/pizzas/vegetariana.jpg",
       },
     ],
   },
