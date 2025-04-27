@@ -1,31 +1,46 @@
 <template>
-  <!-- Header/Navbar -->
-  <div class="px-48">
-    <nav class="flex items-center justify-between py-4">
-      <nuxt-link to="/" class="flex items-center">
+  <header class="container mx-auto px-4 lg:px-48">
+    <nav
+      aria-label="Main navigation"
+      class="flex items-center justify-between py-4"
+    >
+      <NuxtLink to="/" class="flex items-center">
         <img src="/images/logo.png" alt="Pizza Castelo" class="h-8" />
         <span class="ml-2 text-xl font-bold text-red-600">Pizza Castelo</span>
-      </nuxt-link>
+      </NuxtLink>
+
       <div class="flex items-center space-x-6 text-gray-700 font-semibold">
-        <nuxt-link to="/">Início</nuxt-link>
-        <nuxt-link to="/cardapio">Cardápio</nuxt-link>
-        <nuxt-link to="/sobre">Sobre</nuxt-link>
-        <nuxt-link to="/sobre/contato">Contato</nuxt-link>
+        <NuxtLink to="/">Início</NuxtLink>
+        <NuxtLink to="/cardapio">Cardápio</NuxtLink>
+        <NuxtLink to="/sobre">Sobre</NuxtLink>
+        <NuxtLink to="/sobre/contato">Contato</NuxtLink>
       </div>
+
       <div class="flex items-center space-x-6">
-        <nuxt-link to="/login" class="text-gray-700 font-semibold"
-          >Entrar</nuxt-link
+        <NuxtLink
+          v-if="!isLoggedIn"
+          to="/login"
+          class="text-gray-700 font-semibold"
         >
-        <nuxt-link
+          Entrar
+        </NuxtLink>
+
+        <NuxtLink
           to="/carrinho"
           class="bg-red-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-red-700"
         >
           <Icon name="uil:shopping-cart" class="w-4 h-4" />
-          <div>Carrinho</div>
-        </nuxt-link>
+          <span>Carrinho</span>
+        </NuxtLink>
       </div>
     </nav>
-  </div>
+  </header>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useUserStore } from "@/stores/user";
+
+const userStore = useUserStore();
+const isLoggedIn = computed(() => userStore.isLoggedIn);
+</script>
