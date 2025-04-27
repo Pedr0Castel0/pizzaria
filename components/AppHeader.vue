@@ -14,6 +14,7 @@
         <NuxtLink to="/cardapio">Cardápio</NuxtLink>
         <NuxtLink to="/sobre">Sobre</NuxtLink>
         <NuxtLink to="/sobre/contato">Contato</NuxtLink>
+        <NuxtLink v-if="isLoggedIn" to="/historico">Histórico</NuxtLink>
       </div>
 
       <div class="flex items-center space-x-6">
@@ -27,10 +28,17 @@
 
         <NuxtLink
           to="/carrinho"
-          class="bg-red-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-red-700"
+          class="bg-red-600 relative text-white px-4 py-2 rounded-md flex items-center space-x-2 hover:bg-red-700"
         >
           <Icon name="uil:shopping-cart" class="w-4 h-4" />
           <span>Carrinho</span>
+          <UBadge
+            v-if="totalItems > 0"
+            color="neutral"
+            class="absolute -top-2 -right-2 rounded-full"
+          >
+            {{ totalItems }}
+          </UBadge>
         </NuxtLink>
       </div>
     </nav>
@@ -40,7 +48,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useUserStore } from "@/stores/user";
-
+import { useCartStore } from "@/stores/cart";
 const userStore = useUserStore();
 const isLoggedIn = computed(() => userStore.isLoggedIn);
+const cartStore = useCartStore();
+const totalItems = computed(() => cartStore.totalItems);
 </script>
