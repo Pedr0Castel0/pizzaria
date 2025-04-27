@@ -24,7 +24,10 @@
         />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div
+        v-if="currentStep === 0"
+        class="grid grid-cols-1 lg:grid-cols-3 gap-8"
+      >
         <!-- Carrinho e Formulário -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Lista de Produtos -->
@@ -222,6 +225,122 @@
           </UCard>
         </div>
       </div>
+
+      <div v-if="currentStep === 1">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Formulário de Pagamento -->
+          <div class="lg:col-span-2">
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Forma de Pagamento</h2>
+              </template>
+
+              <div class="space-y-6">
+                <!-- Pagamento Online -->
+                <div>
+                  <URadioGroup
+                    v-model="form.pagamento"
+                    :items="[
+                      {
+                        value: 'online',
+                        label: 'Pagamento Online',
+                        description: 'Pague com PIX ou cartão de crédito',
+                      },
+                      {
+                        value: 'entrega',
+                        label: 'Pagamento na Entrega',
+                        description: 'Pague quando receber seu pedido',
+                      },
+                    ]"
+                    class="space-y-4"
+                  />
+                </div>
+
+                <!-- QR Code (se pagamento online) -->
+                <div v-if="form.pagamento === 'online'" class="text-center">
+                  <img
+                    src="/pagamento/qrcode.png"
+                    alt="QR Code para pagamento"
+                    class="mx-auto w-64 h-64"
+                  />
+                  <p class="mt-4 text-sm text-gray-600">
+                    Escaneie o QR Code para pagar com PIX
+                  </p>
+                </div>
+
+                <!-- Opções de Pagamento na Entrega -->
+                <div v-if="form.pagamento === 'entrega'" class="space-y-4">
+                  <URadioGroup
+                    v-model="form.pagamentoEntrega"
+                    :items="[
+                      {
+                        value: 'dinheiro',
+                        label: 'Dinheiro',
+                        description: 'Pague em dinheiro na entrega',
+                      },
+                      {
+                        value: 'cartao',
+                        label: 'Cartão de Crédito/Débito',
+                        description: 'Pague com cartão na entrega',
+                      },
+                    ]"
+                    class="space-y-4"
+                  />
+
+                  <!-- Input de Troco (se dinheiro) -->
+                  <div v-if="form.pagamentoEntrega === 'dinheiro'">
+                    <UFormField label="Troco para quanto?">
+                      <UInput
+                        v-model="form.trocoPara"
+                        type="number"
+                        placeholder="0,00"
+                        class="w-full"
+                      />
+                    </UFormField>
+                  </div>
+                </div>
+              </div>
+            </UCard>
+          </div>
+
+          <!-- Resumo do Pedido -->
+          <div class="lg:col-span-1">
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Resumo do Pedido</h2>
+              </template>
+
+              <div class="space-y-4">
+                <div class="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>R$ {{ subtotal.toFixed(2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Taxa de Entrega</span>
+                  <span>R$ {{ taxaEntrega.toFixed(2) }}</span>
+                </div>
+                <div class="border-t pt-4">
+                  <div class="flex justify-between font-semibold text-lg">
+                    <span>Total</span>
+                    <span>R$ {{ total.toFixed(2) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <template #footer>
+                <UButton
+                  color="primary"
+                  block
+                  :disabled="!isPagamentoValid"
+                  @click="confirmarPagamento"
+                >
+                  Confirmar Pedido
+                </UButton>
+              </template>
+            </UCard>
+          </div>
+        </div>
+      </div>
     </UContainer>
   </div>
 </template>
@@ -263,7 +382,15 @@ interface DeliveryFormModel {
   estado: string;
   opcaoEntrega: string;
 }
-const form = reactive<DeliveryFormModel>({
+
+// Formulário de pagamento
+interface PaymentFormModel {
+  pagamento: 'online' | 'entrega' | null;
+  pagamentoEntrega: 'dinheiro' | 'cartao' | null;
+  trocoPara: string;
+}
+
+const form = reactive<DeliveryFormModel & PaymentFormModel>({
   cep: "",
   endereco: "",
   numero: "",
@@ -272,6 +399,9 @@ const form = reactive<DeliveryFormModel>({
   cidade: "",
   estado: "",
   opcaoEntrega: "padrao",
+  pagamento: null,
+  pagamentoEntrega: null,
+  trocoPara: "",
 });
 
 const deliveryOptions = [
@@ -312,6 +442,14 @@ const isFormValid = computed(
   () => form.cep && form.endereco && form.numero && form.cidade && form.estado
 );
 
+// Validação do pagamento
+const isPagamentoValid = computed(() => {
+  if (!form.pagamento) return false;
+  if (form.pagamento === 'entrega' && !form.pagamentoEntrega) return false;
+  if (form.pagamento === 'entrega' && form.pagamentoEntrega === 'dinheiro' && !form.trocoPara) return false;
+  return true;
+});
+
 // Ações
 function updateQuantity(id: number, delta: number) {
   const item = cartItems.value.find((i) => i.id === id);
@@ -346,5 +484,10 @@ async function buscarCEP() {
 function continuarPagamento() {
   currentStep.value = 1;
   // navegar para página de pagamento
+}
+
+function confirmarPagamento() {
+  // Implementar lógica de confirmação
+  currentStep.value = 2;
 }
 </script>
