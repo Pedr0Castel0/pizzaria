@@ -63,8 +63,11 @@
                   name="i-heroicons-check-circle"
                   class="w-6 h-6 text-success-500"
                 />
-                <span class="font-medium text-gray-900">{{ item }}</span>
+                <span class="font-medium text-gray-900">{{
+                  item.descricao
+                }}</span>
               </div>
+              <span class="text-sm text-gray-500">{{ item.data_pedido }}</span>
             </div>
           </UCard>
         </div>
@@ -80,17 +83,26 @@ definePageMeta({
   layout: "default",
 });
 
+interface HistoryResponse {
+  status: string;
+  historico: {
+    descricao: string;
+    data_pedido: string;
+  }[];
+}
+
 const { listarHistorico } = useHistory();
 const loading = ref(true);
 const error = ref<string | null>(null);
-const historico = ref<string[]>([]);
+const historico = ref<HistoryResponse["historico"]>([]);
 
 // Carregar histórico
 async function carregarHistorico() {
   try {
     loading.value = true;
     error.value = null;
-    historico.value = await listarHistorico();
+    const response = await listarHistorico();
+    historico.value = response?.historico ?? [];
   } catch (err) {
     error.value =
       "Não foi possível carregar seu histórico. Tente novamente mais tarde.";
