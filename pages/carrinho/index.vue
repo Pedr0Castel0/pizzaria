@@ -230,34 +230,113 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Formulário de Pagamento -->
           <div class="lg:col-span-2">
-            <UCard>
+            <UCard class="p-6">
               <template #header>
-                <h2 class="text-xl font-semibold">Forma de Pagamento</h2>
+                <h2 class="text-2xl font-bold text-gray-900">
+                  Forma de Pagamento
+                </h2>
               </template>
 
-              <div class="space-y-6">
-                <!-- Pagamento Online -->
-                <div>
-                  <URadioGroup
-                    v-model="form.pagamento"
-                    :items="[
-                      {
-                        value: 'online',
-                        label: 'Pagamento Online',
-                        description: 'Pague com PIX ou cartão de crédito',
-                      },
-                      {
-                        value: 'entrega',
-                        label: 'Pagamento na Entrega',
-                        description: 'Pague quando receber seu pedido',
-                      },
-                    ]"
-                    class="space-y-4"
-                  />
+              <div class="space-y-8">
+                <!-- Métodos de Pagamento -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Pagamento Online -->
+                  <div
+                    class="relative p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
+                    :class="{
+                      'border-primary-500 bg-primary-50':
+                        form.pagamento === 'online',
+                      'border-gray-200': form.pagamento !== 'online',
+                    }"
+                    @click="form.pagamento = 'online'"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div
+                        class="w-10 h-10 rounded-full flex items-center justify-center"
+                        :class="{
+                          'bg-primary-100': form.pagamento === 'online',
+                          'bg-gray-100': form.pagamento !== 'online',
+                        }"
+                      >
+                        <UIcon
+                          name="i-heroicons-qr-code"
+                          class="w-6 h-6"
+                          :class="{
+                            'text-primary-600': form.pagamento === 'online',
+                            'text-gray-600': form.pagamento !== 'online',
+                          }"
+                        />
+                      </div>
+                      <div>
+                        <h3
+                          class="font-semibold"
+                          :class="{
+                            'text-primary-900': form.pagamento === 'online',
+                            'text-gray-900': form.pagamento !== 'online',
+                          }"
+                        >
+                          Pagamento Online
+                        </h3>
+                        <p class="text-sm text-gray-600 mt-1">
+                          Pague com PIX ou cartão de crédito
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Pagamento na Entrega -->
+                  <div
+                    class="relative p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
+                    :class="{
+                      'border-primary-500 bg-primary-50':
+                        form.pagamento === 'entrega',
+                      'border-gray-200': form.pagamento !== 'entrega',
+                    }"
+                    @click="form.pagamento = 'entrega'"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div
+                        class="w-10 h-10 rounded-full flex items-center justify-center"
+                        :class="{
+                          'bg-primary-100': form.pagamento === 'entrega',
+                          'bg-gray-100': form.pagamento !== 'entrega',
+                        }"
+                      >
+                        <UIcon
+                          name="i-heroicons-truck"
+                          class="w-6 h-6"
+                          :class="{
+                            'text-primary-600': form.pagamento === 'entrega',
+                            'text-gray-600': form.pagamento !== 'entrega',
+                          }"
+                        />
+                      </div>
+                      <div>
+                        <h3
+                          class="font-semibold"
+                          :class="{
+                            'text-primary-900': form.pagamento === 'entrega',
+                            'text-gray-900': form.pagamento !== 'entrega',
+                          }"
+                        >
+                          Pagamento na Entrega
+                        </h3>
+                        <p class="text-sm text-gray-600 mt-1">
+                          Pague quando receber seu pedido
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- QR Code (se pagamento online) -->
-                <div v-if="form.pagamento === 'online'" class="text-center">
+                <div
+                  v-if="form.pagamento === 'online'"
+                  class="text-center p-6 bg-gray-50 rounded-lg"
+                >
+                  <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    Escaneie para pagar
+                  </h3>
                   <img
                     src="/pagamento/qrcode.png"
                     alt="QR Code para pagamento"
@@ -270,34 +349,158 @@
 
                 <!-- Opções de Pagamento na Entrega -->
                 <div v-if="form.pagamento === 'entrega'" class="space-y-4">
-                  <URadioGroup
-                    v-model="form.pagamentoEntrega"
-                    :items="[
-                      {
-                        value: 'dinheiro',
-                        label: 'Dinheiro',
-                        description: 'Pague em dinheiro na entrega',
-                      },
-                      {
-                        value: 'cartao',
-                        label: 'Cartão de Crédito/Débito',
-                        description: 'Pague com cartão na entrega',
-                      },
-                    ]"
-                    class="space-y-4"
-                  />
+                  <h3 class="text-lg font-medium text-gray-900">
+                    Escolha a forma de pagamento
+                  </h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dinheiro -->
+                    <div
+                      class="relative p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
+                      :class="{
+                        'border-primary-500 bg-primary-50':
+                          form.pagamentoEntrega === 'dinheiro',
+                        'border-gray-200': form.pagamentoEntrega !== 'dinheiro',
+                      }"
+                      @click="form.pagamentoEntrega = 'dinheiro'"
+                    >
+                      <div class="flex items-start gap-3">
+                        <div
+                          class="w-10 h-10 rounded-full flex items-center justify-center"
+                          :class="{
+                            'bg-primary-100':
+                              form.pagamentoEntrega === 'dinheiro',
+                            'bg-gray-100': form.pagamentoEntrega !== 'dinheiro',
+                          }"
+                        >
+                          <UIcon
+                            name="i-heroicons-banknotes"
+                            class="w-6 h-6"
+                            :class="{
+                              'text-primary-600':
+                                form.pagamentoEntrega === 'dinheiro',
+                              'text-gray-600':
+                                form.pagamentoEntrega !== 'dinheiro',
+                            }"
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            class="font-semibold"
+                            :class="{
+                              'text-primary-900':
+                                form.pagamentoEntrega === 'dinheiro',
+                              'text-gray-900':
+                                form.pagamentoEntrega !== 'dinheiro',
+                            }"
+                          >
+                            Dinheiro
+                          </h3>
+                          <p class="text-sm text-gray-600 mt-1">
+                            Pague em dinheiro na entrega
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Cartão -->
+                    <div
+                      class="relative p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md"
+                      :class="{
+                        'border-primary-500 bg-primary-50':
+                          form.pagamentoEntrega === 'cartao',
+                        'border-gray-200': form.pagamentoEntrega !== 'cartao',
+                      }"
+                      @click="form.pagamentoEntrega = 'cartao'"
+                    >
+                      <div class="flex items-start gap-3">
+                        <div
+                          class="w-10 h-10 rounded-full flex items-center justify-center"
+                          :class="{
+                            'bg-primary-100':
+                              form.pagamentoEntrega === 'cartao',
+                            'bg-gray-100': form.pagamentoEntrega !== 'cartao',
+                          }"
+                        >
+                          <UIcon
+                            name="i-heroicons-credit-card"
+                            class="w-6 h-6"
+                            :class="{
+                              'text-primary-600':
+                                form.pagamentoEntrega === 'cartao',
+                              'text-gray-600':
+                                form.pagamentoEntrega !== 'cartao',
+                            }"
+                          />
+                        </div>
+                        <div>
+                          <h3
+                            class="font-semibold"
+                            :class="{
+                              'text-primary-900':
+                                form.pagamentoEntrega === 'cartao',
+                              'text-gray-900':
+                                form.pagamentoEntrega !== 'cartao',
+                            }"
+                          >
+                            Cartão de Crédito/Débito
+                          </h3>
+                          <p class="text-sm text-gray-600 mt-1">
+                            Pague com cartão na entrega
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <!-- Input de Troco (se dinheiro) -->
-                  <div v-if="form.pagamentoEntrega === 'dinheiro'">
+                  <div
+                    v-if="form.pagamentoEntrega === 'dinheiro'"
+                    class="mt-4 p-4 bg-gray-50 rounded-lg"
+                  >
                     <UFormField label="Troco para quanto?">
-                      <UInput
-                        v-model="form.trocoPara"
-                        type="number"
-                        placeholder="0,00"
-                        class="w-full"
-                      />
+                      <div class="relative">
+                        <span
+                          class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+                        >
+                          R$
+                        </span>
+                        <UInput
+                          v-model="form.trocoPara"
+                          type="number"
+                          placeholder="0,00"
+                          class="w-full pl-8"
+                        />
+                      </div>
                     </UFormField>
                   </div>
+                </div>
+
+                <!-- Mensagem de Erro -->
+                <div
+                  v-if="showError.value"
+                  class="p-4 bg-red-50 border border-red-200 rounded-lg"
+                >
+                  <div class="flex items-center gap-2">
+                    <UIcon
+                      name="i-heroicons-exclamation-circle"
+                      class="w-5 h-5 text-red-500"
+                    />
+                    <p class="text-sm text-red-600">
+                      Por favor, selecione uma forma de pagamento válida
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Botão de Confirmação -->
+                <div class="flex justify-end">
+                  <UButton
+                    color="primary"
+                    size="lg"
+                    :disabled="!isPagamentoValid"
+                    @click="confirmarPagamento"
+                  >
+                    Confirmar Forma de Pagamento
+                  </UButton>
                 </div>
               </div>
             </UCard>
@@ -326,17 +529,6 @@
                   </div>
                 </div>
               </div>
-
-              <template #footer>
-                <UButton
-                  color="primary"
-                  block
-                  :disabled="!isPagamentoValid"
-                  @click="confirmarPagamento"
-                >
-                  Confirmar Pedido
-                </UButton>
-              </template>
             </UCard>
           </div>
         </div>
@@ -455,6 +647,8 @@ const isPagamentoValid = computed(() => {
   return true;
 });
 
+const showError = ref(false);
+
 // Ações
 function updateQuantity(id: number, delta: number) {
   const item = cartItems.value.find((i) => i.id === id);
@@ -497,7 +691,11 @@ function continuarPagamento() {
 }
 
 function confirmarPagamento() {
-  // Implementar lógica de confirmação
+  if (!isPagamentoValid.value) {
+    showError.value = true;
+    return;
+  }
+  showError.value = false;
   currentStep.value = 2;
 }
 </script>
