@@ -55,46 +55,6 @@
           </UButton>
         </form>
 
-        <div class="w-full">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div
-                class="w-full border-t border-gray-200 dark:border-gray-700"
-              ></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span
-                class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-              >
-                Ou continue com
-              </span>
-            </div>
-          </div>
-
-          <div
-            class="mt-6 grid grid-flow-col justify-center auto-cols-max gap-3"
-          >
-            <UButton
-              icon="i-simple-icons-google"
-              size="md"
-              color="neutral"
-              variant="outline"
-            />
-            <UButton
-              icon="i-simple-icons-facebook"
-              size="md"
-              color="neutral"
-              variant="outline"
-            />
-            <UButton
-              icon="i-simple-icons-apple"
-              size="md"
-              color="neutral"
-              variant="outline"
-            />
-          </div>
-        </div>
-
         <p class="text-center text-sm text-gray-600 dark:text-gray-400">
           Não tem uma conta?
           <NuxtLink
