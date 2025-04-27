@@ -26,6 +26,7 @@
             >R$ {{ pizza.price.toFixed(2) }}</span
           >
           <UButton
+            type="button"
             color="primary"
             variant="solid"
             icon="i-heroicons-plus"
@@ -41,6 +42,7 @@
 
 <script setup lang="ts">
 import { useCartStore } from "~/stores/cart";
+const toast = useToast();
 interface Pizza {
   id: number;
   name: string;
@@ -58,6 +60,13 @@ defineProps<{
 }>();
 
 const addPizzaToCart = (pizza: Pizza) => {
+  toast.add({
+    title: "Pizza adicionada ao carrinho",
+    description: "Pizza adicionada ao carrinho com sucesso",
+    icon: "i-heroicons-check-circle",
+    color: "success",
+    duration: 2000,
+  });
   const cartStore = useCartStore();
   cartStore.add(pizza);
 };
