@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col min-h-screen bg-[#FEF2F2]">
     <!-- Main -->
-    <main class="flex-1 container mx-auto px-4 py-8">
-      <div class="max-w-6xl mx-auto">
+    <main class="flex-1 container mx-auto px-48 py-8">
+      <div class="mx-auto">
         <!-- Breadcrumb -->
         <nav class="flex items-center gap-2 text-sm mb-8">
           <NuxtLink to="/" class="text-gray-600 hover:underline">
