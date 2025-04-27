@@ -6,48 +6,50 @@
       <div class="flex flex-col items-center space-y-6">
         <div class="flex items-center gap-2">
           <img src="/images/logo.png" alt="Pizza Castelo" class="h-14" />
-          <span class="text-red-500 dark:text-red-400 text-2xl font-bold"
-            >Pizza Castelo</span
-          >
+          <span class="text-red-500 dark:text-red-400 text-2xl font-bold">
+            Pizza Castelo
+          </span>
         </div>
 
-        <div class="text-center w-full">
-          <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
-            Entre em sua conta
-          </h2>
-        </div>
+        <h2
+          class="text-2xl font-bold mb-2 text-gray-900 dark:text-white text-center"
+        >
+          Entre em sua conta
+        </h2>
 
-        <form class="space-y-4 w-full">
-          <UFormField label="Email" class="text-gray-700 dark:text-gray-300">
-            <UInput placeholder="seu@email.com" class="w-full" />
-          </UFormField>
-
-          <UFormField label="Senha" class="text-gray-700 dark:text-gray-300">
-            <UInput type="password" placeholder="••••••••" class="w-full" />
-          </UFormField>
-          <div class="flex justify-between items-center">
-            <UCheckbox
-              label="Lembrar de mim"
-              class="text-gray-700 dark:text-gray-300 w-full"
+        <form class="space-y-4 w-full" @submit.prevent="handleLogin">
+          <UFormField label="Email">
+            <UInput
+              v-model="email"
+              type="email"
+              name="email"
+              autocomplete="email"
+              required
+              class="w-full"
             />
-            <UButton
-              type="button"
-              variant="link"
-              color="error"
-              class="text-sm w-full justify-end"
-            >
-              Esqueceu a senha?
-            </UButton>
-          </div>
+          </UFormField>
 
+          <UFormField label="Senha">
+            <UInput
+              v-model="senha"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              required
+              class="w-full"
+            />
+          </UFormField>
+
+          <div class="flex justify-between items-center">
+            <UCheckbox v-model="lembrar" label="Lembrar de mim" />
+          </div>
           <UButton
             type="submit"
             color="primary"
             variant="solid"
             block
-            class="mt-4"
             :loading="loading"
-            @click="handleSubmit"
+            :disabled="loading"
           >
             Entrar
           </UButton>
@@ -63,8 +65,9 @@
             <div class="relative flex justify-center text-sm">
               <span
                 class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-                >Ou continue com</span
               >
+                Ou continue com
+              </span>
             </div>
           </div>
 
@@ -92,35 +95,56 @@
           </div>
         </div>
 
-        <div class="text-center text-sm">
-          <span class="text-gray-600 dark:text-gray-400"
-            >Não tem uma conta?</span
-          >
+        <p class="text-center text-sm text-gray-600 dark:text-gray-400">
+          Não tem uma conta?
           <NuxtLink
             to="/register"
             class="text-red-500 dark:text-red-400 font-semibold ml-1"
           >
             Cadastre-se agora
           </NuxtLink>
-        </div>
+        </p>
       </div>
     </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuth } from "@/composables/useAuth";
+
+definePageMeta({
+  layout: "auth",
+});
+
+const router = useRouter();
+const toast = useToast();
+const { login } = useAuth();
+
+const email = ref("");
+const senha = ref("");
+const lembrar = ref(false);
 const loading = ref(false);
 
-const handleSubmit = () => {
+async function handleLogin() {
   loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-    navigateTo("/");
-    useToast().add({
+  try {
+    await login(email.value, senha.value);
+    router.push("/");
+    toast.add({
       title: "Login realizado com sucesso",
       description: "Você foi redirecionado para a página inicial",
       color: "success",
     });
-  }, 2000);
-};
+  } catch (err: unknown) {
+    toast.add({
+      title: "Erro ao fazer login",
+      description: err instanceof Error ? err.message : "Tente novamente",
+      color: "error",
+    });
+  } finally {
+    loading.value = false;
+  }
+}
 </script>
