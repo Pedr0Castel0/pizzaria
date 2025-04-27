@@ -168,34 +168,11 @@
               <h2 class="text-xl font-semibold text-gray-800">
                 Opções de Entrega
               </h2>
-              <URadioGroup v-model="form.opcaoEntrega" class="mt-4 space-y-4">
-                <URadio
-                  v-for="option in deliveryOptions"
-                  :key="option.value"
-                  :value="option.value"
-                  :label="option.label"
-                  :description="option.description"
-                  class="flex justify-between items-center p-4 border rounded-lg cursor-pointer"
-                  :class="
-                    form.opcaoEntrega === option.value
-                      ? 'border-red-500 bg-red-50'
-                      : 'border-gray-200 bg-white'
-                  "
-                >
-                  <template #meta>
-                    <span
-                      :class="
-                        form.opcaoEntrega === option.value
-                          ? 'text-red-500'
-                          : 'text-gray-500'
-                      "
-                      class="font-medium"
-                    >
-                      {{ option.price }}
-                    </span>
-                  </template>
-                </URadio>
-              </URadioGroup>
+              <URadioGroup
+                v-model="form.opcaoEntrega"
+                :items="deliveryOptions"
+                class="mt-4 space-y-4"
+              />
             </div>
 
             <!-- Botão de Continuação -->
@@ -302,19 +279,16 @@ const deliveryOptions = [
     value: "padrao",
     label: "Entrega Padrão",
     description: "Receba em até 45 minutos",
-    price: "R$ 10,00",
   },
   {
     value: "expressa",
     label: "Entrega Expressa",
     description: "Receba em até 30 minutos",
-    price: "R$ 15,00",
   },
   {
     value: "gratis",
     label: "Entrega Grátis",
     description: "Acima de R$100 - até 60 minutos",
-    price: "R$ 0,00",
   },
 ];
 
