@@ -1,6 +1,9 @@
 interface HistoryResponse {
   status: string;
-  historico: string[];
+  historico: {
+    descricao: string;
+    data_pedido: string;
+  }[];
 }
 
 export function useHistory() {
@@ -12,7 +15,7 @@ export function useHistory() {
       baseURL: config.public.apiBase,
     });
     if (error.value) throw error.value;
-    return data.value?.historico ?? [];
+    return data.value;
   }
 
   return { listarHistorico };
