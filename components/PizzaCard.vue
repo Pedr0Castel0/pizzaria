@@ -5,7 +5,7 @@
     <img
       :src="pizza.image"
       :alt="pizza.name"
-      class="w-32 h-32 object-contain rounded-md"
+      class="w-32 h-32 object-cover rounded-md"
     />
 
     <div class="flex-1">
@@ -29,7 +29,7 @@
             color="primary"
             variant="solid"
             icon="i-heroicons-plus"
-            @click="$emit('add-to-cart', pizza)"
+            @click="addPizzaToCart(pizza)"
           >
             Adicionar
           </UButton>
@@ -40,11 +40,13 @@
 </template>
 
 <script setup lang="ts">
+import { useCartStore } from "~/stores/cart";
 interface Pizza {
   id: number;
   name: string;
   description: string;
   price: number;
+  quantity: number;
   category: string;
   image: string;
   size: string;
@@ -55,7 +57,8 @@ defineProps<{
   pizza: Pizza;
 }>();
 
-defineEmits<{
-  "add-to-cart": [pizza: Pizza];
-}>();
+const addPizzaToCart = (pizza: Pizza) => {
+  const cartStore = useCartStore();
+  cartStore.add(pizza);
+};
 </script>
