@@ -73,7 +73,6 @@
                           color="neutral"
                           variant="ghost"
                           icon="i-heroicons-minus"
-                          :disabled="item.quantity <= 1"
                           @click="updateQuantity(item.id, -1)"
                         />
                         <span class="w-8 text-center">{{ item.quantity }}</span>
@@ -252,6 +251,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
+import { useCartStore } from "~/stores/cart";
 
 // Passos do checkout
 const currentStep = ref(0);
@@ -262,25 +262,18 @@ interface CartItem {
   name: string;
   description: string;
   price: number;
-  size: string;
-  image: string;
   quantity: number;
+  category: string;
+  image: string;
+  size: string;
+  info?: string;
 }
+
 const cartItems = ref<CartItem[]>([]);
 
 // Carrega itens do localStorage ou API
-cartItems.value = [
-  // Exemplo de item
-  {
-    id: 1,
-    name: "Pizza Margherita",
-    description: "...",
-    price: 45,
-    size: "8 fatias",
-    image: "/images/pizzas/margherita.jpg",
-    quantity: 1,
-  },
-];
+const cartStore = useCartStore();
+cartItems.value = cartStore.items;
 
 // Formulário de entrega
 interface DeliveryFormModel {
@@ -351,6 +344,7 @@ function updateQuantity(id: number, delta: number) {
   if (item) item.quantity = Math.max(1, item.quantity + delta);
 }
 function clearCart() {
+  cartStore.clear();
   cartItems.value = [];
 }
 
