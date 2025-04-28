@@ -25,7 +25,7 @@
         class="border-2 border-red-500 rounded-lg p-4 flex flex-col shadow bg-white"
       >
         <img
-          :src="`/images/pizzas/${pizza.nome}.jpg`"
+          :src="`/images/pizzas/${toKebabCase(pizza.nome)}.jpg`"
           :alt="pizza.nome"
           class="w-full h-32 object-cover rounded-lg mb-4"
         />
@@ -74,6 +74,15 @@ onMounted(async () => {
   console.log("recomendacoes", sugestoes.value);
 });
 
+function toKebabCase(str: string) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
 const addPizzaToCart = (pizza: PizzaRecomendada) => {
   const cartStore = useCartStore();
   const pizzaEncontrada = mockPizzas.find(
@@ -107,7 +116,7 @@ const mockPizzas = [
     id: 1,
     name: "Margherita",
     description: "Molho de tomate, mussarela, manjericão fresco e azeite",
-    price: 45.00,
+    price: 45.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/margherita.jpg",
@@ -116,7 +125,7 @@ const mockPizzas = [
     id: 2,
     name: "Pepperoni",
     description: "Molho de tomate, mussarela e pepperoni",
-    price: 55.00,
+    price: 55.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/pepperoni.jpg",
@@ -125,7 +134,7 @@ const mockPizzas = [
     id: 3,
     name: "Quatro Queijos",
     description: "Molho de tomate, mussarela, parmesão, gorgonzola e catupiry",
-    price: 60.00,
+    price: 60.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/quatro-queijos.jpg",
@@ -134,7 +143,7 @@ const mockPizzas = [
     id: 4,
     name: "Frango com Catupiry",
     description: "Molho de tomate, mussarela, frango desfiado e catupiry",
-    price: 55.00,
+    price: 55.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/frango-catupiry.jpg",
@@ -143,7 +152,7 @@ const mockPizzas = [
     id: 5,
     name: "Calabresa",
     description: "Molho de tomate, mussarela, calabresa fatiada e cebola",
-    price: 50.00,
+    price: 50.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/calabresa.jpg",
@@ -153,7 +162,7 @@ const mockPizzas = [
     name: "Vegetariana",
     description:
       "Molho de tomate, mussarela, tomate, cebola, pimentão, champignon e azeitonas",
-    price: 55.00,
+    price: 55.0,
     size: "8 fatias",
     category: "Pizzas Tradicionais",
     image: "/images/pizzas/vegetariana.jpg",
