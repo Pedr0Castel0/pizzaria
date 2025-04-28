@@ -38,7 +38,7 @@
 
     <div class="flex flex-col items-center justify-center mt-8">
       <p class="text-gray-600 text-sm mb-4">
-        Nossas pizzas possuem 10 fatias cada
+        Nossas pizzas possuem 8 fatias cada
       </p>
       <nuxt-link
         to="/cardapio"

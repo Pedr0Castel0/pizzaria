@@ -132,7 +132,7 @@
               </template>
               <div class="p-6">
                 <div class="bg-gray-100 rounded-lg p-4 mb-4">
-                  <p class="text-gray-800">Rua das Pizzas, 123</p>
+                  <p class="text-gray-800">Rua Fernando Pinheiro, Nº 175</p>
                   <p class="text-gray-600">Centro - São Paulo/SP</p>
                   <p class="text-gray-600">CEP: 01234-567</p>
                 </div>
@@ -173,7 +173,7 @@
                   />
                   <div>
                     <p class="text-gray-800 font-medium">Telefone</p>
-                    <p class="text-gray-600">(11) 5555-1234</p>
+                    <p class="text-gray-600">(82) 4002-8922</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -183,7 +183,7 @@
                   />
                   <div>
                     <p class="text-gray-800 font-medium">WhatsApp</p>
-                    <p class="text-gray-600">(11) 99999-8888</p>
+                    <p class="text-gray-600">(82) 4002-8922</p>
                   </div>
                 </div>
                 <div class="flex items-center gap-3">

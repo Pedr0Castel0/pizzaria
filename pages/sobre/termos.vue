@@ -172,15 +172,15 @@
             <ul class="space-y-2 text-sm">
               <li class="flex items-center">
                 <UIcon name="i-heroicons-phone" class="w-5 h-5 mr-2" />
-                (11) 5555‑1234
+                (82) 4002‑8922
               </li>
               <li class="flex items-center">
                 <UIcon name="i-heroicons-map-pin" class="w-5 h-5 mr-2" />
-                Rua das Pizzas, 123
+                Rua Fernando Pinheiro, Nº 175
               </li>
               <li class="flex items-center">
                 <UIcon name="i-heroicons-clock" class="w-5 h-5 mr-2" />
-                Ter‑Dom: 18:00‑23:00
+                Seg‑Dom: 18h às 23h
               </li>
             </ul>
           </div>
