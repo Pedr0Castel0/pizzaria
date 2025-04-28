@@ -480,7 +480,7 @@
 
                 <!-- Mensagem de Erro -->
                 <div
-                  v-if="showError.value"
+                  v-if="showError"
                   class="p-4 bg-red-50 border border-red-200 rounded-lg"
                 >
                   <div class="flex items-center gap-2">

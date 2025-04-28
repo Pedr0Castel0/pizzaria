@@ -28,6 +28,7 @@
           </p>
           <button
             class="bg-red-600 text-white py-2 px-3 rounded-md text-sm w-full mt-auto"
+            @click="addPizzaToCart(pizza)"
           >
             Adicionar ao carrinho
           </button>
@@ -51,6 +52,43 @@
 </template>
 
 <script setup lang="ts">
+const toast = useToast();
+
+interface PizzaRecomendada {
+  id: number;
+  nome: string;
+  preco: string;
+  descricao: string;
+  imagem: string;
+}
+
+const addPizzaToCart = (pizza: PizzaRecomendada) => {
+  const cartStore = useCartStore();
+  const pizzaEncontrada = cardapio.find(
+    (p) => p.nome.toLowerCase() === pizza.nome.toLowerCase()
+  );
+
+  if (pizzaEncontrada) {
+    cartStore.add({
+      id: pizzaEncontrada.id,
+      name: pizzaEncontrada.nome,
+      description: pizzaEncontrada.descricao,
+      price: Number(pizzaEncontrada.preco),
+      quantity: 1,
+      image: pizzaEncontrada.imagem,
+      category: "pizza",
+      size: "grande",
+    });
+
+    toast.add({
+      title: "Pizza adicionada ao carrinho",
+      description: "Pizza adicionada ao carrinho com sucesso",
+      icon: "i-heroicons-check-circle",
+      color: "success",
+      duration: 2000,
+    });
+  }
+};
 const cardapio = [
   {
     id: 1,
