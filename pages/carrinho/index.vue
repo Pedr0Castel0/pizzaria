@@ -26,7 +26,7 @@
 
       <div
         v-if="currentStep === 0"
-        class="grid grid-cols-1 lg:grid-cols-3 gap-8"
+        class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative"
       >
         <!-- Carrinho e Formulário -->
         <div class="lg:col-span-2 space-y-6">
@@ -189,7 +189,7 @@
         </div>
 
         <!-- Resumo do Pedido -->
-        <div class="lg:col-span-1">
+        <div class="lg:col-span-1 sticky top-20">
           <UCard>
             <template #header>
               <h2 class="text-xl font-semibold">Resumo do Pedido</h2>
@@ -533,6 +533,195 @@
           </div>
         </div>
       </div>
+      <div v-if="currentStep === 2">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Resumo do Pedido -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Lista de Produtos -->
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Seu Pedido</h2>
+              </template>
+
+              <div class="space-y-4">
+                <div
+                  v-for="item in cartItems"
+                  :key="item.id"
+                  class="flex gap-4 py-4 border-b last:border-0"
+                >
+                  <img
+                    :src="item.image"
+                    :alt="item.name"
+                    class="w-24 h-24 object-cover rounded-lg"
+                  />
+                  <div class="flex-1">
+                    <div class="flex justify-between">
+                      <div>
+                        <h3 class="font-medium">{{ item.name }}</h3>
+                        <p class="text-sm text-gray-600">
+                          {{ item.description }}
+                        </p>
+                        <p class="text-sm text-gray-500">{{ item.size }}</p>
+                      </div>
+                      <div class="text-right">
+                        <p class="font-semibold">
+                          R$ {{ (item.price * item.quantity).toFixed(2) }}
+                        </p>
+                        <p class="text-sm text-gray-600">
+                          {{ item.quantity }}x R$ {{ item.price.toFixed(2) }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </UCard>
+
+            <!-- Informações de Entrega -->
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Entrega</h2>
+              </template>
+
+              <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                  <UIcon
+                    name="i-heroicons-map-pin"
+                    class="w-6 h-6 text-gray-400 mt-1"
+                  />
+                  <div>
+                    <p class="font-medium">
+                      {{ form.endereco }}, {{ form.numero }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      {{ form.complemento ? `${form.complemento} - ` : "" }}
+                      {{ form.bairro }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      {{ form.cidade }} - {{ form.estado }}
+                    </p>
+                    <p class="text-sm text-gray-600">CEP: {{ form.cep }}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <UIcon
+                    name="i-heroicons-truck"
+                    class="w-6 h-6 text-gray-400 mt-1"
+                  />
+                  <div>
+                    <p class="font-medium">
+                      {{
+                        deliveryOptions.find(
+                          (opt) => opt.value === form.opcaoEntrega
+                        )?.label
+                      }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      {{
+                        deliveryOptions.find(
+                          (opt) => opt.value === form.opcaoEntrega
+                        )?.description
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </UCard>
+
+            <!-- Informações de Pagamento -->
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Pagamento</h2>
+              </template>
+
+              <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                  <UIcon
+                    :name="
+                      form.pagamento === 'online'
+                        ? 'i-heroicons-qr-code'
+                        : 'i-heroicons-credit-card'
+                    "
+                    class="w-6 h-6 text-gray-400 mt-1"
+                  />
+                  <div>
+                    <p class="font-medium">
+                      {{
+                        form.pagamento === "online"
+                          ? "Pagamento Online"
+                          : "Pagamento na Entrega"
+                      }}
+                    </p>
+                    <p class="text-sm text-gray-600">
+                      {{
+                        form.pagamentoEntrega === "dinheiro"
+                          ? "Dinheiro"
+                          : "Cartão de Crédito/Débito"
+                      }}
+                    </p>
+                    <p
+                      v-if="
+                        form.pagamentoEntrega === 'dinheiro' && form.trocoPara
+                      "
+                      class="text-sm text-gray-600"
+                    >
+                      Troco para: R$ {{ form.trocoPara }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </UCard>
+          </div>
+
+          <!-- Resumo de Valores -->
+          <div class="lg:col-span-1">
+            <UCard>
+              <template #header>
+                <h2 class="text-xl font-semibold">Resumo do Pedido</h2>
+              </template>
+
+              <div class="space-y-4">
+                <div class="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>R$ {{ subtotal.toFixed(2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Taxa de Entrega</span>
+                  <span>R$ {{ taxaEntrega.toFixed(2) }}</span>
+                </div>
+                <div class="border-t pt-4">
+                  <div class="flex justify-between font-semibold text-lg">
+                    <span>Total</span>
+                    <span>R$ {{ total.toFixed(2) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <template #footer>
+                <div class="space-y-4">
+                  <UButton
+                    color="primary"
+                    block
+                    size="lg"
+                    @click="finalizarPedido"
+                  >
+                    Confirmar Pedido
+                  </UButton>
+                  <UButton
+                    color="neutral"
+                    variant="ghost"
+                    block
+                    @click="currentStep = 1"
+                  >
+                    Editar Pedido
+                  </UButton>
+                </div>
+              </template>
+            </UCard>
+          </div>
+        </div>
+      </div>
     </UContainer>
   </div>
 </template>
@@ -540,6 +729,22 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useCartStore } from "~/stores/cart";
+import { useAddress } from "@/composables/useAddress";
+import { usePedido } from "@/composables/usePedido";
+const toast = useToast();
+
+interface AddressResponse {
+  status: string;
+  endereco: {
+    cep: string;
+    endereco: string;
+    numero: string;
+    complemento: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+  };
+}
 
 // Passos do checkout
 const currentStep = ref(0);
@@ -698,4 +903,39 @@ function confirmarPagamento() {
   showError.value = false;
   currentStep.value = 2;
 }
+
+function finalizarPedido() {
+  const { criarPedido } = usePedido();
+  criarPedido(cartItems.value.map((item) => item.name));
+
+  cartStore.clear();
+  cartItems.value = [];
+  currentStep.value = 0;
+  toast.add({
+    title: "Pedido realizado com sucesso",
+    description: "Seu pedido foi enviado para a cozinha",
+    icon: "i-heroicons-check-circle",
+    color: "success",
+    duration: 5000,
+  });
+}
+
+async function getAddress() {
+  const { getAddress } = useAddress();
+  const address = (await getAddress()) as AddressResponse;
+  if (address?.status === "sucesso") {
+    form.cep = address.endereco.cep;
+    form.endereco = address.endereco.endereco;
+    form.numero = address.endereco.numero;
+    form.complemento = address.endereco.complemento;
+    form.bairro = address.endereco.bairro;
+    form.cidade = address.endereco.cidade;
+    form.estado = address.endereco.estado;
+  }
+  console.log(address);
+}
+
+onMounted(() => {
+  getAddress();
+});
 </script>
