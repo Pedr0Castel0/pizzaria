@@ -15,7 +15,10 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+      v-if="sugestoes.length > 0"
+      class="grid grid-cols-1 md:grid-cols-3 gap-6"
+    >
       <div
         v-for="(pizza, index) in sugestoes"
         :key="index"
@@ -41,6 +44,12 @@
           </button>
         </div>
       </div>
+    </div>
+    <div v-else class="text-center">
+      <p class="text-gray-600">
+        Não há sugestões de pizza para você no momento.
+      </p>
+      <p class="text-gray-600">Tente novamente mais tarde.</p>
     </div>
   </section>
 </template>
