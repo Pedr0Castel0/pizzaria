@@ -180,9 +180,12 @@
 
             <!-- Botão de Continuação -->
             <div class="flex justify-end">
-              <UButton @click="continuarPagamento">
+              <UButton
+                color="primary"
+                :disabled="!isFormValid || !cartItems.length"
+                @click="continuarPagamento"
+              >
                 Continuar para Pagamento
-                <UIcon name="arrow-right" class="ml-2" />
               </UButton>
             </div>
           </UCard>
@@ -712,7 +715,7 @@
                     color="neutral"
                     variant="ghost"
                     block
-                    @click="currentStep = 1"
+                    @click="currentStep = 0"
                   >
                     Editar Pedido
                   </UButton>
