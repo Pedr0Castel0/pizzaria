@@ -166,7 +166,7 @@
         <div class="flex justify-end">
           <UButton
             v-if="formComplete"
-            :disabled="loading"
+            :loading="loading"
             type="submit"
             color="primary"
             variant="solid"
@@ -189,13 +189,13 @@ const loading = ref(false);
 const formComplete = computed(() => {
   return Boolean(
     form.value.nome &&
-    form.value.email &&
-    form.value.senha &&
-    form.value.cep &&
-    form.value.endereco &&
-    form.value.numero &&
-    form.value.cidade &&
-    form.value.estado
+      form.value.email &&
+      form.value.senha &&
+      form.value.cep &&
+      form.value.endereco &&
+      form.value.numero &&
+      form.value.cidade &&
+      form.value.estado
   );
 });
 
@@ -236,9 +236,19 @@ async function handleRegister() {
     });
     router.push("/login");
   } catch (error: unknown) {
+    console.log("EEROR", error);
+
     useToast().add({
       title: "Erro ao fazer cadastro",
-      description: error instanceof Error ? error.message : "Tente novamente",
+      description:
+        error &&
+        typeof error === "object" &&
+        "data" in error &&
+        error.data !== null &&
+        typeof error.data === "object" &&
+        "detail" in error.data
+          ? String(error.data.detail)
+          : "Ocorreu um erro ao fazer o cadastro",
       color: "error",
     });
   } finally {
