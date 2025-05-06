@@ -14,16 +14,15 @@ export function useAuth() {
   const userStore = useUserStore();
 
   async function login(email: string, senha: string) {
-    const { data, error } = await useFetch<LoginResponse>("/login", {
+    const data = await $fetch<LoginResponse>("/login", {
       baseURL: config.public.apiBase,
       method: "POST",
       body: { email, senha },
     });
 
-    if (error.value) throw error.value;
-    userStore.setUser(data.value?.usuario_id ?? 0);
-    localStorage.setItem("usuario_id", JSON.stringify(data.value?.usuario_id));
-    console.log("data.value", data.value);
+    userStore.setUser(data.usuario_id ?? 0);
+    localStorage.setItem("usuario_id", JSON.stringify(data.usuario_id));
+    console.log("data", data);
   }
 
   async function register(payload: {
@@ -38,12 +37,11 @@ export function useAuth() {
     cidade: string;
     estado: string;
   }) {
-    const { error } = await useFetch<RegisterResponse>("/cadastro", {
+    await $fetch<RegisterResponse>("/cadastro", {
       baseURL: config.public.apiBase,
       method: "POST",
       body: payload,
     });
-    if (error.value) throw error.value;
   }
 
   return { login, register };
