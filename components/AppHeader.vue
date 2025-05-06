@@ -40,6 +40,17 @@
             {{ totalItems }}
           </UBadge>
         </NuxtLink>
+        <UTooltip text="Sair">
+          <UButton
+            v-if="isLoggedIn"
+            icon="octicon:sign-out"
+            size="md"
+            color="primary"
+            class="h-full"
+            variant="ghost"
+            @click="logout"
+          />
+        </UTooltip>
       </div>
     </nav>
   </header>
@@ -49,8 +60,13 @@
 import { computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useCartStore } from "@/stores/cart";
+
 const userStore = useUserStore();
 const isLoggedIn = computed(() => userStore.isLoggedIn);
 const cartStore = useCartStore();
 const totalItems = computed(() => cartStore.totalItems);
+
+const logout = () => {
+  userStore.logout();
+};
 </script>
